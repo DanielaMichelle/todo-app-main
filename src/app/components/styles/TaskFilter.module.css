@@ -1,0 +1,46 @@
+.taskFilterDesktop {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.taskFilterMobile {
+    height: 52px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0px 0px 32px 0px rgba(147,148,165,0.92);
+}
+
+.taskFilterDesktop button,
+.taskFilterMobile button {
+    border: none;
+    background: none;
+    color: var(--dark-grayish-blue-light);
+    font-size: 14px;
+    font-family: 'Josefin Sans', sans-serif;
+    cursor: pointer;
+}
+
+.taskFilterDesktop button:active,
+.taskFilterMobile button:active {
+    color: var(--brigth-blue);
+    font-weight: 500;
+}
+
+.taskFilterDesktop button:hover,
+.taskFilterMobile button:hover {
+    color: var(--very-dark-grayish-blue-light);
+    font-weight: 500;
+}
+
+
+@media (max-width: 426px){
+    .taskFilterMobile {
+        box-shadow: 0px 0px 12px -4px rgba(147,148,165,0.92);
+    }
+}
