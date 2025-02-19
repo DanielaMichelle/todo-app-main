@@ -1,24 +1,20 @@
-// TODO /////////////////////////////////////////////////////
-// Agregar al input un btn en mobile para agregar items
-// al ingresar items que sean del tipo capitalize
-////////////////////////////////////////////////////////////
-
 "use client";
 import styles from "./page.module.css";
 import Image from "next/image";
 import { TaskList } from "./components/TaskList";
 import { useMediaQuery } from '@react-hook/media-query';
-import { TaskFilter } from "./components/TaskFilter";
 import { useState } from "react";
 import { TaskType } from "./TaskType";
+import { ModeContext } from "./ModeContext";
 
 let indexTask = 0;
 
 export default function Home() {
   const isMobile: boolean = useMediaQuery('(max-width: 426px)');
+  const isTablet: boolean = useMediaQuery('(max-width: 769px)');
   const [newTask, setNewTask] = useState<TaskType>({id: 0, task: '', completed: false});
   const [taskList, setTaskList] = useState<TaskType[]>([]);
-
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   const addTask = () => {
     if(newTask.task.trim() !== '') {      
@@ -26,6 +22,12 @@ export default function Home() {
       setNewTask({id: 0, task: '', completed: false});
       indexTask = indexTask + 1;
     }
+  }
+
+  const deleteTask = (index: number) => {
+    setTaskList(prevTaskList => {
+      return prevTaskList.filter(task => task.id !== index);
+    })
   }
 
   const completeTask = (index: number) => {
@@ -36,13 +38,20 @@ export default function Home() {
     });
   }
 
+  const clearCompletedTasks = () => {
+    setTaskList(prevTaskList => {
+      return prevTaskList.filter(task => task.completed === false);
+    })
+  }
+
   return (
-    <main className={styles.main}>
+    <ModeContext.Provider value={isDarkMode}>
+      <main className={`${styles.main} ${isDarkMode && styles.main_darkMode}`}>
       {
         !isMobile ?
         <Image 
           className={styles.main_background}
-          src="/images/bg-desktop-light.jpg"
+          src={`/images/bg-desktop-${isDarkMode ? 'dark' : 'light'}.jpg`}
           alt="background"
           width={1440}
           height={300}
@@ -50,36 +59,31 @@ export default function Home() {
         :
         <Image 
           className={styles.main_background}
-          src="/images/bg-mobile-light.jpg"
+          src={`/images/bg-mobile-${isDarkMode ? 'dark' : 'light'}.jpg`}
           alt="background"
           width={500}
           height={100}
         />
       }
-      
       <div className={styles.todoContainer}>
         {/* Header */}
         <header className={styles.header}>
           <h1>Todo</h1>
           <Image 
-            src="/images/icon-moon.svg"
-            alt="dark mode"
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className={styles.header_icon_mode}
+            src={`/images/icon-${isDarkMode ? "sun" : "moon"}.svg`}
+            alt="mode"
             width={24}
             height={24}
           />
-          {/* <Image 
-            src="/images/icon-sun.svg"
-            alt="dark mode"
-            width={24}
-            height={24}
-          /> */}
         </header>
 
         {/* Input Todo List */}
-        <div className={styles.input_container}>
+        <div className={`${styles.input_container} ${isDarkMode && styles.input_container_darkMode}`}>
           <span className={styles.input_circle}></span>
           <input 
-              className={styles.input}
+              className={`${styles.input} ${isDarkMode && styles.input_darkMode}`}
               type="text" 
               placeholder="Create a new todo..."
               name="task"
@@ -92,14 +96,19 @@ export default function Home() {
               }}
           >
           </input> 
-          {/* AGREGAR UN CHECK PARA MOBILE O ALGO PARA ENVIAR */}
+          {isTablet && <button className={styles.addTaskBtn} onClick={addTask}>
+            <Image 
+              className={styles.addTaskBtn_icon}
+              src="./images/icon-check.svg"
+              alt="check"
+              width={isMobile ? 12 : 14}
+              height={isMobile ? 12 : 14}
+            />
+          </button>}
         </div>
 
         {/* Task List */}
-        <TaskList taskList={taskList} completeTask={completeTask} />
-
-        {/* Task Filter */}
-        {isMobile && <TaskFilter isMobile={isMobile} />}
+        <TaskList taskList={taskList} completeTask={completeTask} clearCompletedTasks={clearCompletedTasks} deleteTask={deleteTask} />
 
         {/* Footer */}
         <footer className={styles.footer}>
@@ -107,5 +116,6 @@ export default function Home() {
         </footer>
       </div>
     </main>
+    </ModeContext.Provider>
   );
 }
