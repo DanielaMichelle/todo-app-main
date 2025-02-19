@@ -7,13 +7,21 @@ import { useState } from "react";
 import { TaskType } from "./TaskType";
 import { ModeContext } from "./ModeContext";
 
-let indexTask = 0;
+let indexTask = 6;
+const initialListTask = [
+  {id: 1, task: 'Complete online JavaScript course', completed: true},
+  {id: 2, task: 'Jog around the park 3x', completed: false},
+  {id: 3, task: '10 minutes meditation', completed: false},
+  {id: 4, task: 'Read for 1 hour', completed: false},
+  {id: 5, task: 'Pick up groceries', completed: false},
+  {id: 6, task: 'Complete Todo App on Frontend Mentor', completed: false},
+];
 
 export default function Home() {
   const isMobile: boolean = useMediaQuery('(max-width: 426px)');
   const isTablet: boolean = useMediaQuery('(max-width: 769px)');
   const [newTask, setNewTask] = useState<TaskType>({id: 0, task: '', completed: false});
-  const [taskList, setTaskList] = useState<TaskType[]>([]);
+  const [taskList, setTaskList] = useState<TaskType[]>(initialListTask);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   const addTask = () => {

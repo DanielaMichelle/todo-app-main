@@ -51,11 +51,6 @@
 }
 
 /* Task completed */
-
-.task_check_container_completed {
-    /* position: relative; */
-}
-
 .task_check_completed {
     background-image: linear-gradient(to right bottom, hsl(192, 100%, 67%), hsl(280, 87%, 65%));  
     display: flex;
@@ -86,7 +81,7 @@
     }
 
     .task_check {
-        width: 18px;
+        width: 17.5px;
         height: 18px;
     }
 }
@@ -105,4 +100,23 @@
     background-color: var(--very-dark-desaturated-blue-dark);
     top: 1px;
     left: 1px;
+}
+
+@media (max-width: 426px) {
+    .task_check_darkMode {
+        width: 20.5px;
+    }
+}
+
+@media (max-width: 376px) {
+    .task_check_darkMode {
+        width: 18px;
+        height: 18.5px;
+    }
+}
+
+@media (max-width: 321px) {
+    .task_check_darkMode {
+        width: 17px;
+    }
 }
