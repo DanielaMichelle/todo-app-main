@@ -120,8 +120,8 @@ export default function Home() {
 
         {/* Footer */}
         <footer className={styles.footer}>
-          <p>Drag and drop to order list</p>
-        </footer>
+          {/* <p>Drag and drop to order list</p> */}
+          </footer>
       </div>
     </main>
     </ModeContext.Provider>
